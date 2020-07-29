@@ -1,7 +1,6 @@
 package console;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -27,17 +26,17 @@ public class RXTextUtilities
 
         try
         {
-            Rectangle2D r = component.modelToView2D(component.getCaretPosition());
+            Rectangle r = component.modelToView(component.getCaretPosition());
             JViewport viewport = (JViewport)container;
             int extentHeight = viewport.getExtentSize().height;
             int viewHeight = viewport.getViewSize().height;
 
-            int y = (int)Math.max(0, r.getY() - ((extentHeight - r.getHeight()) / 2));
+            int y = Math.max(0, r.y - ((extentHeight - r.height) / 2));
             y = Math.min(y, viewHeight - extentHeight);
 
             viewport.setViewPosition(new Point(0, y));
         }
-        catch(BadLocationException ble) {ble.printStackTrace();}
+        catch(BadLocationException ble) {}
     }
 
     /*
@@ -57,11 +56,11 @@ public class RXTextUtilities
 
         try
         {
-            Rectangle2D r = component.modelToView2D( component.getCaretPosition() );
-            int width = (int)(r.getX() - component.getInsets().left);
+            Rectangle r = component.modelToView( component.getCaretPosition() );
+            int width = r.x - component.getInsets().left;
             column = width / characterWidth;
         }
-        catch(BadLocationException ble) {ble.printStackTrace();}
+        catch(BadLocationException ble) {}
 
         return column + 1;
     }
@@ -117,19 +116,19 @@ public class RXTextUtilities
                 component.setCaretPosition(Utilities.getNextWord(component, position));
             }
         }
-        catch(Exception e) {e.printStackTrace();}
+        catch(Exception e) {}
     }
 
     /*
      *  Return the number of lines of text, including wrapped lines.
      */
-    public static int getWrappedLines(JTextArea component)
+    /*public static int getWrappedLines(JTextArea component)
     {
         View view = component.getUI().getRootView(component).getView(0);
         int preferredHeight = (int)view.getPreferredSpan(View.Y_AXIS);
         int lineHeight = component.getFontMetrics( component.getFont() ).getHeight();
         return preferredHeight / lineHeight;
-    }
+    }*/
 
     /*
      *  Return the number of lines of text, including wrapped lines.

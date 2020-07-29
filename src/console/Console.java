@@ -24,6 +24,7 @@ public class Console implements KeyListener {
 
     private int count_lines()
     {
+
         return text_area.getLineCount()+RXTextUtilities.getWrappedLines(text_area);
     }
 
@@ -43,10 +44,9 @@ public class Console implements KeyListener {
 
         container = new JPanel();
         container.setSize(frame.getWidth(), 2000);
-        container.setLayout(new BorderLayout(0,0));
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         text_area = new JTextArea();
-        container.add(text_area, BorderLayout.NORTH);
         text_area.setEditable(false);
         text_area.setBorder(null);
         text_area.setBackground(background);
@@ -56,17 +56,17 @@ public class Console implements KeyListener {
         text_area.addKeyListener(this);
         text_area.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*text_area.getLineCount()));
+        container.add(text_area);
 
         text_field = new JTextArea();
-        container.add(text_field, BorderLayout.PAGE_END);
         text_field.setBackground(background);
         text_field.setForeground(foreground);
         text_field.setCaretColor(foreground);
         text_field.setBorder(null);
         text_field.setLineWrap(true);
         text_field.addKeyListener(this);
-        text_field.setPreferredSize(new Dimension(container.getWidth(),
-                container.getHeight()-text_area.getHeight()));
+        text_field.setPreferredSize(new Dimension(container.getWidth(), 2000));
+        container.add(text_field);
 
         scrollPane = new JScrollPane(container);
         scrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
@@ -74,11 +74,11 @@ public class Console implements KeyListener {
 
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
         frame.setVisible(true);
-        container.setSize(frame.getContentPane().getWidth()-scrollPane.getVerticalScrollBar().getWidth(), 2000);
-        text_field.setPreferredSize(new Dimension(container.getWidth(),
-                container.getHeight()-text_area.getHeight()));
+        container.setPreferredSize(new Dimension(frame.getWidth()-scrollPane.getVerticalScrollBar().getWidth(),
+                text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
         text_area.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*text_area.getLineCount()));
+        text_field.setPreferredSize(new Dimension(container.getWidth(), 2000));
     }
 
     public void outln (String message) {
@@ -91,10 +91,12 @@ public class Console implements KeyListener {
             text_area.append("\r\n"+message);
         text_area.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()));
+        text_field.setPreferredSize(new Dimension(container.getWidth(), 2000));
         container.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
+        scrollPane.setPreferredSize(new Dimension(container.getWidth(),
+                text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
         scrollPane.getVerticalScrollBar().setValue(text_area.getHeight());
-        System.out.println(scrollPane.getVerticalScrollBar().getValue());
     }
 
     public void out (String message) {
@@ -103,8 +105,12 @@ public class Console implements KeyListener {
         text_area.append(message);
         text_area.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()));
+        text_field.setPreferredSize(new Dimension(container.getWidth(), 2000));
         container.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
+        scrollPane.setPreferredSize(new Dimension(container.getWidth(),
+                text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
+        scrollPane.getVerticalScrollBar().setValue(text_area.getHeight());
     }
 
     public String get_input () throws InterruptedException {
