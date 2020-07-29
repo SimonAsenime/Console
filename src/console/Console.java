@@ -96,7 +96,8 @@ public class Console implements KeyListener {
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
         scrollPane.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
-        scrollPane.getVerticalScrollBar().setValue(text_area.getHeight());
+        scrollPane.getVerticalScrollBar().setValue(text_area.getHeight()-
+                text_area.getFontMetrics(text_area.getFont()).getHeight()*2);
     }
 
     public void out (String message) {
@@ -110,7 +111,8 @@ public class Console implements KeyListener {
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
         scrollPane.setPreferredSize(new Dimension(container.getWidth(),
                 text_area.getFontMetrics(text_area.getFont()).getHeight()*count_lines()+text_field.getHeight()));
-        scrollPane.getVerticalScrollBar().setValue(text_area.getHeight());
+        scrollPane.getVerticalScrollBar().setValue(text_area.getHeight()-
+                text_area.getFontMetrics(text_area.getFont()).getHeight()*2);
     }
 
     public String get_input () throws InterruptedException {
